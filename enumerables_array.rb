@@ -75,16 +75,42 @@ class Array
 
     remainder = num % self.length
     self[remainder..-1] + self[0...remainder]
-    
+
   end
 
+  def my_join(mark = '')
+    res = ''
+    self.each do |ele|
+      res += ele
+      res += mark
+    end
+    res
+  end
+
+  def my_reverse
+    res = []
+    i = 0
+    while i < self.length
+      res << self[-1 - i]
+      i += 1
+    end
+    res
+  end
 end
 
-a = [ "a", "b", "c", "d" ]
-p a.my_rotate         #=> ["b", "c", "d", "a"]
-p a.my_rotate(2)      #=> ["c", "d", "a", "b"]
-p a.my_rotate(-3)     #=> ["b", "c", "d", "a"]
-p a.my_rotate(15)     #=> ["d", "a", "b", "c"]
+p [ "a", "b", "c" ].my_reverse   #=> ["c", "b", "a"]
+p [ 1 ].my_reverse               #=> [1]
+
+# a = [ "a", "b", "c", "d" ]
+# p a.my_join         # => "abcd"
+# p a.my_join("$")    # => "a$b$c$d"
+
+
+# a = [ "a", "b", "c", "d" ]
+# p a.my_rotate         #=> ["b", "c", "d", "a"]
+# p a.my_rotate(2)      #=> ["c", "d", "a", "b"]
+# p a.my_rotate(-3)     #=> ["b", "c", "d", "a"]
+# p a.my_rotate(15)     #=> ["d", "a", "b", "c"]
 
 # a = [ 4, 5, 6 ]
 # b = [ 7, 8, 9 ]
