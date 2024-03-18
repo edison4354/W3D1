@@ -106,10 +106,32 @@ end
 # words).
 
 def substrings(string)
+  res = []
+  (0...string.length).each do |i|
+    (i...string.length).each do |j|
+      res << string[i..j]
+      
+    end
+
+  end
+  res
 end
 
+# p substrings("hello")
+
+
 def subwords(word, dictionary)
+  real_res = []
+  res = substrings(word)
+  res.each do |sub_word|
+    real_res << sub_word if dictionary.include?(sub_word)
+  end
+
+  return real_res
+
 end
+
+p subwords("hello", ["h", "hell", "o", "goodbywe"])
 
 # ### Doubler
 # Write a `doubler` method that takes an array of integers and returns an
