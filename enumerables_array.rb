@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Array
   def my_each(&prc)
     (0...self.length).each {|idx| prc.call(self[idx])}
@@ -42,7 +44,7 @@ class Array
     self.each do |ele|
       if ele.is_a?(Array)
         res += ele.my_flatten
-      else 
+      else
         res << ele
       end
     end
@@ -51,9 +53,37 @@ class Array
 
   def my_zip(*arrays)
     res = Array.new(self.length) {Array.new}
+    self.each_with_index {|ele, idx| res[idx] << ele}
+    arrays.each do |array|
+      array.each_with_index do |ele, idx|
+        res[idx] << ele
+      end
+    end
+
+    res.each do |array|
+      if array.length < arrays.count + 1
+        short_fall = array.count + 1 - array.length
+        short_fall.times do
+          array << nil
+        end
+      end
+    end
+    res
   end
 
 end
+
+
+a = [ 4, 5, 6 ]
+b = [ 7, 8, 9 ]
+# p [1, 2, 3].my_zip(a, b) # => [[1, 4, 7], [2, 5, 8], [3, 6, 9]]
+p a.my_zip([1,2], [8])   # => [[4, 1, 8], [5, 2, nil], [6, nil, nil]]
+p [1, 2].my_zip(a, b)    # => [[1, 4, 7], [2, 5, 8]]
+
+c = [10, 11, 12]
+d = [13, 14, 15]
+p [1, 2].my_zip(a, b, c, d)    # => [[1, 4, 7, 10, 13], [2, 5, 8, 11, 14]]
+
 
 # p [1, 2, 3, [4, [5, 6]], [[[7]], 8]].my_flatten # => [1, 2, 3, 4, 5, 6, 7, 8]
 
