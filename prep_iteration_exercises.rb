@@ -110,7 +110,7 @@ def substrings(string)
   (0...string.length).each do |i|
     (i...string.length).each do |j|
       res << string[i..j]
-      
+
     end
 
   end
@@ -131,14 +131,18 @@ def subwords(word, dictionary)
 
 end
 
-p subwords("hello", ["h", "hell", "o", "goodbywe"])
+# p subwords("hello", ["h", "hell", "o", "goodbywe"])
 
 # ### Doubler
 # Write a `doubler` method that takes an array of integers and returns an
 # array with the original elements multiplied by two.
 
 def doubler(array)
+  array.map {|ele| ele * 2 }
 end
+
+# p doubler([1, 2, 3, 4, 5, 6])
+# p doubler([5, 4, 3, 2, 8, 6])
 
 # ### My Each
 # Extend the Array class to include a method named `my_each` that takes a
@@ -165,8 +169,28 @@ end
 
 class Array
   def my_each(&prc)
+    i = 0
+    while i < self.length
+    prc.call(self[i])
+      i += 1
+    end
+    self
   end
 end
+
+return_value = [1, 2, 3].my_each do |num|
+  puts num
+end.my_each do |num|
+  puts num
+end
+# => 1
+     2
+     3
+     1
+     2
+     3
+
+p return_value # => [1, 2, 3]
 
 # ### My Enumerable Methods
 # * Implement new `Array` methods `my_map` and `my_select`. Do
@@ -183,14 +207,32 @@ end
 
 class Array
   def my_map(&prc)
+    res = []
+    self.my_each do |ele|
+      res << prc.call(ele)
+    end
+    res
   end
 
   def my_select(&prc)
+    res = []
+    self.my_each do |ele|
+      res << ele if prc.call(ele)
+    end
+    res
   end
 
   def my_inject(&blk)
+    res = self[0]
+    self.my_each do |ele|
+      res = blk.call(res, ele)
+    end
+    res
   end
 end
+
+p [1, 2, 3, 4].my_inject {|sum, num| sum + num}
+
 
 # ### Concatenate
 # Create a method that takes in an `Array` of `String`s and uses `inject`
