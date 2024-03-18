@@ -2,9 +2,16 @@
 #
 # Write a method `factors(num)` that returns an array containing all the
 # factors of a given number.
+require 'byebug'
 
 def factors(num)
+  res = []
+  (1..num).each {|div| res << div if num % div == 0}
+  res
 end
+
+# p factors(20)
+# p factors(7)
 
 # ### Bubble Sort
 #
@@ -47,11 +54,43 @@ end
 
 class Array
   def bubble_sort!(&prc)
+    sorted = false
+
+    while !sorted
+      (0...self.length - 1).each do |idx|
+        sorted = true
+        if prc.call(self[idx], self[idx + 1]) == 1
+          self[idx + 1], self[idx] = self[idx], self[idx + 1]
+          sorted = false
+        end
+      end
+    end
+    self
   end
 
   def bubble_sort(&prc)
+    unsorted_arr = self.map {|ele| ele }
+
+    sorted = false
+
+    while !sorted
+      sorted = true
+      (0...unsorted_arr.length - 1).each do |idx|
+        if prc.call(unsorted_arr[idx], unsorted_arr[idx + 1]) == 1
+          unsorted_arr[idx + 1], unsorted_arr[idx] = unsorted_arr[idx], unsorted_arr[idx + 1]
+          sorted = false
+        end
+      end
+    end
+    unsorted_arr
   end
 end
+
+# p [1, 3, 5, 8, 4].bubble_sort! { |num1, num2| num1 <=> num2 }
+# p [1, 3, 5, 7, 2].bubble_sort! { |num1, num2| num2 <=> num1 }
+# p [1, 3, 5, 8, 4].bubble_sort { |num1, num2| num1 <=> num2 }
+# p [1, 3, 5, 7, 2].bubble_sort { |num1, num2| num2 <=> num1 }
+
 
 # ### Substrings and Subwords
 #
